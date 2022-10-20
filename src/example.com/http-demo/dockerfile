@@ -1,7 +1,0 @@
-FROM alpine
-
-WORKDIR /build
-
-COPY hello .
-
-CMD ["./hello"]

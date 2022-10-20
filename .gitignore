@@ -1,0 +1,4 @@
+/.vscode
+/.idea
+/mysql/data
+/golang/id_rsa
