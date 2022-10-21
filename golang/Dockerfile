@@ -21,5 +21,6 @@ RUN apt-get update
 RUN apt-get -y upgrade
 
 RUN apt-get install -y vim
+RUN go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
 
 WORKDIR /whitebench
