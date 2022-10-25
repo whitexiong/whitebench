@@ -4,7 +4,7 @@
 
 ## 如何使用 ？
 
-> 1. windows 下 需要 wsl2 + docker， 其他服务端直接拉取项目后执行 ./builder_image.sh
+> 1. windows 下 需要 wsl2 + docker， 其他系统直接拉取项目后执行 ./builder_image.sh
 > 2. 注意需要把 golang 下的 id_rsa 替换成自己的私钥, 这里主要用户 git 拉取项目以及 ssh 服务的配置
 >    3. 配置 daemon.json 中的值
 {
@@ -26,16 +26,20 @@
         // 这里写自己的地址,登录阿里云
      ]
 }
->    4. 执行 run_white_bench
+>    4. 执行 ./run_white_bench.sh
 
 ## 环境集成
     
     debian11
     golang
-    mysql8.0
+    mysql8.0 // 使用 mysql.test 或者 ip 登录 密码 123456
     nodejs16
     vim
-    redis
+    redis // redis 登录使用自己本机的 ip 地址登录默认是没有密码
+
+## 创建一个 gin 项目
+
+> 进入容器后可拉取一个 golang 项目所以项目在 workspace 目录下
 
 ## 其他命令，
 
