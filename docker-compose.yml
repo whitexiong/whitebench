@@ -20,6 +20,7 @@ services:
       - '.:/whitebench'
     depends_on:
       - mysql.test
+      - redis.test
   mysql.test:
     container_name: mysql8.0
     build:
@@ -31,5 +32,14 @@ services:
       - './mysql/conf:/etc/mysql/conf.d'
     ports:
       - "3306:3306"
+    networks:
+      - backend
+  redis:
+    container_name: redis
+    build: ./redis
+    volumes:
+      - '/data/redis:/data'
+    ports:
+      - "6379:6379"
     networks:
       - backend
