@@ -1,0 +1,45 @@
+version: '3.5'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  golang.test:
+    container_name: golang
+    build:
+      context: ./golang
+    ports:
+      - "8080:8080"
+      - "10000:22"
+    networks:
+      - backend
+    stdin_open: true
+    tty: true
+    volumes:
+      - '.:/whitebench'
+    depends_on:
+      - mysql.test
+      - redis.test
+  mysql.test:
+    container_name: mysql8.0
+    build:
+      context: ./mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+      - './mysql/data:/var/lib/mysql'
+      - './mysql/conf:/etc/mysql/conf.d'
+    ports:
+      - "3306:3306"
+    networks:
+      - backend
+  redis.test:
+    container_name: redis
+    build: ./redis
+    volumes:
+      - '/data/redis:/data'
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
