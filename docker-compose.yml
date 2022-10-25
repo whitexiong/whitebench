@@ -10,7 +10,8 @@ services:
     build:
       context: ./golang
     ports:
-      - "8000:8000"
+      - "8080:8080"
+      - "10000:22"
     networks:
       - backend
     stdin_open: true

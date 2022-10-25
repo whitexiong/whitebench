@@ -124,10 +124,19 @@ Plug 'honza/vim-snippets' " 代码片段仓库
 " 代码自动完成插件
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+
+Plug 'vim-scripts/SuperTab'
+
+" go 主要插件
+Plug 'fatih/vim-go', { 'tag': '*' }
+" go 中的代码追踪，输入 gd 就可以自动跳转
+Plug 'dgryski/vim-godef'
+
 " 插件结束的位置，插件全部放在此行上面
 call plug#end()
 "==============================================================================
 
+let g:go_bin_path = $HOME."/go/bin"
 
 " ======================== 主题配色设置 ===========================
 " 开启24bit的颜色，开启这个颜色会更漂亮一些
@@ -135,13 +144,14 @@ set termguicolors
 " 主题配色
 colorscheme gruvbox 
 " 主题背景 dark-深色; light-浅色
-set background=light 
+set background=dark
 " =================================================================
 
 
 " ======================== nerdtree 插件配置 ======================
 " 设置一个打开的快捷键， 如我的就是 " + b 打开， 再按一次关闭
 nnoremap <leader>b :NERDTreeToggle<CR>
+
 " 导航目录展开的符号
 let g:NERDTreeDirArrowExpandable = '▸' 
 " 导航目录关闭的符号
