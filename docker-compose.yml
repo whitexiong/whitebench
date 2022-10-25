@@ -34,7 +34,7 @@ services:
       - "3306:3306"
     networks:
       - backend
-  redis:
+  redis.test:
     container_name: redis
     build: ./redis
     volumes:
