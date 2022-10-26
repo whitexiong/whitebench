@@ -35,7 +35,7 @@ services:
     networks:
       - backend
   redis.test:
-    container_name: redis
+    container_name: redis_dev
     build: ./redis
     volumes:
       - '/data/redis:/data'
