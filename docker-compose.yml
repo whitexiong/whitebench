@@ -9,9 +9,11 @@ services:
     container_name: golang
     build:
       context: ./golang
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
       - "10000:22"
+      - "8888:8888"
     networks:
       - backend
     stdin_open: true
