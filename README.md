@@ -1,5 +1,7 @@
 # whitebench 是什么 ？
 
+## 快速搭建一套脚手架 php/go
+
 > whitebench 构建一个简单的 go 的环境一键启动, 配置简单。无需担心网络问题就可以构建一个 golang + vim 编辑器环境。大大的降低学习成本并且无缝迁移非常好用，但是需要额外的学习一些服务端的知识。
 
 ## 如何使用 ？
@@ -112,3 +114,7 @@
   如果想扩展自己的容器可以替换 golang 目录下的容器, 具体的 dockerfile 文件可在历史提交记录中查看。
 
 > 编写自己的 docker-compose.yml 加入扩展一键启动
+
+## 下载其他版本的 go
+
+  wget https://go.dev/dl/go1.18.8.linux-arm64.tar.gz

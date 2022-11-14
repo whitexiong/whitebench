@@ -7,6 +7,7 @@ networks:
 services:
   golang.test:
     container_name: golang
+    image: golang:1.8
     build:
       context: ./golang
       dockerfile: Dockerfile
@@ -23,8 +24,32 @@ services:
     depends_on:
       - mysql.test
       - redis.test
+  php.test:
+    container_name: php8.0
+    image: php:8.0
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+      - "10001:22"
+    networks:
+      - backend
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+    stdin_open: true
+    tty: true
+    volumes:
+      - './php/logs:/var/log/php'
+      - '.:/whitebench'
+      - './php/etc/php.ini:/usr/local/etc/php/php.ini'
+    depends_on:
+      - mysql.test
+      - redis.test
   mysql.test:
     container_name: mysql8.0
+    image: mysql:8.0
     build:
       context: ./mysql
     environment:
@@ -38,6 +63,7 @@ services:
       - backend
   redis.test:
     container_name: redis_dev
+    image: redis:5.0
     build: ./redis
     volumes:
       - '/data/redis:/data'
