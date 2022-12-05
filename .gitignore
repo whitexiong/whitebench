@@ -2,3 +2,4 @@
 /.idea
 /mysql/data
 /workspace
+/.pnpm-store
