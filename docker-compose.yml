@@ -24,11 +24,11 @@ services:
     depends_on:
       - mysql.test
       - redis.test
-  php.test:
+  php8.test:
     container_name: php8.0
     image: php:8.0
     build:
-      context: ./php
+      context: ./php8
       dockerfile: Dockerfile
     ports:
       - "8081:8081"
@@ -37,13 +37,34 @@ services:
       - backend
     environment:
       - TZ=Asia/Shanghai
-    restart: always
     stdin_open: true
     tty: true
     volumes:
-      - './php/logs:/var/log/php'
+      - './php8/logs:/var/log/php8'
       - '.:/whitebench'
-      - './php/etc/php.ini:/usr/local/etc/php/php.ini'
+      - './php8/etc/php8.ini:/usr/local/etc/php8/php8.ini'
+    depends_on:
+      - mysql.test
+      - redis.test
+  php74.test:
+    container_name: php7.4
+    image: php:7.4
+    build:
+      context: ./php74
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+      - "10002:22"
+    networks:
+      - backend
+    environment:
+      - TZ=Asia/Shanghai
+    stdin_open: true
+    tty: true
+    volumes:
+      - './php74/logs:/var/log/php7.4'
+      - '.:/whitebench'
+      - './php74/etc/php7.4.ini:/usr/local/etc/php7.4/php7.4.ini'
     depends_on:
       - mysql.test
       - redis.test

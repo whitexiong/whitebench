@@ -1,5 +1,6 @@
-FROM php:8.0-fpm-buster
+FROM php:7.4.33-fpm-buster
 
+USER root
 ## 更换源
 RUN sed -i "s/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g" /etc/apt/sources.list
 
@@ -15,7 +16,6 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
-    # PHP8必须装1.0.4  参考 https://bugs.php.net/bug.php?id=80459
     && pecl install mcrypt-1.0.4 \
     && docker-php-ext-enable mcrypt \
     && docker-php-ext-install mysqli \
@@ -36,7 +36,7 @@ RUN php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.ph
     && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer \
     && composer selfupdate \
-    && composer config -g repo.packagist composer https://packagist.phpcomposer.com
+    && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 
 # 配置 nodejs 可以自己换源
 RUN wget https://github.com/whitexiong/whitebench/releases/download/nodejs/node-v16.18.0-linux-x64.tar.gz -O /home/node-v16.18.0-linux-x64.tar.gz\
