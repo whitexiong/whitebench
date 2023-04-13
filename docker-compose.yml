@@ -42,10 +42,34 @@ services:
     volumes:
       - './php8/logs:/var/log/php8'
       - '.:/whitebench'
-      - './php8/etc/php8.ini:/usr/local/etc/php8/php8.ini'
+      - './php8/etc/php81.ini:/usr/local/etc/php8/php81.ini'
     depends_on:
       - mysql.test
       - redis.test
+  php81.test:
+    container_name: php8.1
+    image: php:8.1
+    build:
+      context: ./php81
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+      - "10004:22"
+      - "5173:5173"
+    networks:
+      - backend
+    environment:
+      - TZ=Asia/Shanghai
+    stdin_open: true
+    tty: true
+    volumes:
+      - './php81/logs:/var/log/php'
+      - '.:/whitebench'
+      - './php81/etc/php81.ini:/usr/local/etc/php/php.ini'
+    depends_on:
+      - mysql.test
+      - redis.test
+      - mongodb
   php74.test:
     container_name: php7.4
     image: php:7.4
@@ -68,6 +92,28 @@ services:
     depends_on:
       - mysql.test
       - redis.test
+#  php72.test:
+#    container_name: php7.2
+#    image: php:7.2
+#    build:
+#      context: php72
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8083:8083"
+#      - "10003:22"
+#    networks:
+#      - backend
+#    environment:
+#      - TZ=Asia/Shanghai
+#    stdin_open: true
+#    tty: true
+#    volumes:
+#      - './php72/logs:/var/log/php7.1'
+#      - '.:/whitebench'
+#      - './php72/etc/php7.2.ini:/usr/local/etc/php7.1/php7.2.ini'
+#    depends_on:
+#      - mysql.test
+#      - redis.test
   mysql.test:
     container_name: mysql8.0
     image: mysql:8.0
@@ -90,5 +136,17 @@ services:
       - '/data/redis:/data'
     ports:
       - "6379:6379"
+    networks:
+      - backend
+  mongodb:
+    container_name: mongodb
+    image: mongo:5.0.5
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=123456
+    volumes:
+      - '/data/mongodb:/data'
     networks:
       - backend

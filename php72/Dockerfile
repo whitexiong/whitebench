@@ -1,7 +1,9 @@
-FROM php:8.0-fpm-buster
+FROM php:7.2.34-fpm-buster
 
+USER root
 ## 更换源
 RUN sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list
+
 RUN apt-get update && apt-get install -y \
     libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev \
     && apt-get install -y libmemcached-dev zlib1g-dev \
@@ -11,18 +13,17 @@ RUN apt-get update && apt-get install -y \
     && apt-get install -y wget \
     && apt-get install -y libzip-dev \
     && apt-get install -y unzip zip  \
-    && docker-php8-ext-install -j$(nproc) iconv \
-    && docker-php8-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php8-ext-install -j$(nproc) gd \
-    # PHP8必须装1.0.4  参考 https://bugs.php.net/bug.php?id=80459
+    && docker-php-ext-install -j$(nproc) iconv \
+    && docker-php-ext-configure gd \
+    && docker-php-ext-install -j$(nproc) gd \
     && pecl install mcrypt-1.0.4 \
-    && docker-php8-ext-enable mcrypt \
-    && docker-php8-ext-install mysqli \
-    && docker-php8-ext-install pdo pdo_mysql \
-    && docker-php8-ext-install zip \
+    && docker-php-ext-enable mcrypt \
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install pdo pdo_mysql \
+    && docker-php-ext-install zip \
     && pecl install redis-5.3.2 \
-    && docker-php8-ext-enable redis \
-    && docker-php8-ext-install -j$(nproc) bcmath
+    && docker-php-ext-enable redis \
+    && docker-php-ext-install -j$(nproc) bcmath
 
 COPY id_rsa /root/.ssh/id_rsa
 RUN chmod 600 /root/.ssh/id_rsa \
@@ -30,9 +31,9 @@ RUN chmod 600 /root/.ssh/id_rsa \
  && sed -i "s/root\:\!/root\:/g" /etc/shadow
 
 # 安装 composer \
-RUN php8 -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');" \
-    && php8 composer-setup.php8 \
-    && php8 -r "unlink('composer-setup.php');" \
+RUN php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');" \
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
     && mv composer.phar /usr/local/bin/composer \
     && composer selfupdate \
     && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
