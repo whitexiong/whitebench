@@ -1,8 +1,7 @@
 FROM php:8.0-fpm-buster
 
 ## 更换源
-RUN sed -i "s/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g" /etc/apt/sources.list
-
+RUN sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list
 RUN apt-get update && apt-get install -y \
     libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng-dev \
     && apt-get install -y libmemcached-dev zlib1g-dev \

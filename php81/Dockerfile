@@ -18,7 +18,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install soap \
     && docker-php-ext-install xml \
-    && pecl install swoole
+    && pecl install swoole \
+    && pecl install mongodb \
+    && docker-php-ext-enable mongodb
 
 COPY id_rsa /root/.ssh/id_rsa
 RUN chmod 600 /root/.ssh/id_rsa \

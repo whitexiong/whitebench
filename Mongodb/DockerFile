@@ -1,0 +1,6 @@
+FROM mongo:5.0.5
+
+ENV MONGO_INITDB_ROOT_USERNAME=root
+ENV MONGO_INITDB_ROOT_PASSWORD=123456
+
+CMD ["mongod", "--auth", "--bind_ip", "0.0.0.0"]
