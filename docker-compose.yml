@@ -5,71 +5,71 @@ networks:
     driver: bridge
 
 services:
-  golang.test:
-    container_name: golang
-    image: golang:1.8
-    build:
-      context: ./golang
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-      - "10000:22"
-      - "8888:8888"
-    networks:
-      - backend
-    stdin_open: true
-    tty: true
-    volumes:
-      - '.:/whitebench'
-    depends_on:
-      - mysql.test
-      - redis.test
-  php8.test:
-    container_name: php8.0
-    image: php:8.0
-    build:
-      context: ./php8
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8081"
-      - "10001:22"
-    networks:
-      - backend
-    environment:
-      - TZ=Asia/Shanghai
-    stdin_open: true
-    tty: true
-    volumes:
-      - './php8/logs:/var/log/php8'
-      - '.:/whitebench'
-      - './php8/etc/php81.ini:/usr/local/etc/php8/php81.ini'
-    depends_on:
-      - mysql.test
-      - redis.test
-  php81.test:
-    container_name: php8.1
-    image: php:8.1
-    build:
-      context: ./php81
-      dockerfile: Dockerfile
-    ports:
-      - "8084:8084"
-      - "10004:22"
-      - "5173:5173"
-    networks:
-      - backend
-    environment:
-      - TZ=Asia/Shanghai
-    stdin_open: true
-    tty: true
-    volumes:
-      - './php81/logs:/var/log/php'
-      - '.:/whitebench'
-      - './php81/etc/php81.ini:/usr/local/etc/php/php.ini'
-    depends_on:
-      - mysql.test
-      - redis.test
-      - mongodb
+#  golang.test:
+#    container_name: golang
+#    image: golang:1.8
+#    build:
+#      context: ./golang
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8080:8080"
+#      - "10000:22"
+#      - "8888:8888"
+#    networks:
+#      - backend
+#    stdin_open: true
+#    tty: true
+#    volumes:
+#      - '.:/whitebench'
+#    depends_on:
+#      - mysql.test
+#      - redis.test
+#  php8.test:
+#    container_name: php8.0
+#    image: php:8.0
+#    build:
+#      context: ./php8
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8081:8081"
+#      - "10001:22"
+#    networks:
+#      - backend
+#    environment:
+#      - TZ=Asia/Shanghai
+#    stdin_open: true
+#    tty: true
+#    volumes:
+#      - './php8/logs:/var/log/php8'
+#      - '.:/whitebench'
+#      - './php8/etc/php81.ini:/usr/local/etc/php8/php81.ini'
+#    depends_on:
+#      - mysql.test
+#      - redis.test
+#  php81.test:
+#    container_name: php8.1
+#    image: php:8.1
+#    build:
+#      context: ./php81
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8084:8084"
+#      - "10004:22"
+#      - "5173:5173"
+#    networks:
+#      - backend
+#    environment:
+#      - TZ=Asia/Shanghai
+#    stdin_open: true
+#    tty: true
+#    volumes:
+#      - './php81/logs:/var/log/php'
+#      - '.:/whitebench'
+#      - './php81/etc/php81.ini:/usr/local/etc/php/php.ini'
+#    depends_on:
+#      - mysql.test
+#      - redis.test
+#      - mongodb
   php74.test:
     container_name: php7.4
     image: php:7.4
@@ -79,6 +79,7 @@ services:
     ports:
       - "8082:8082"
       - "10002:22"
+      - "9000:9000"
     networks:
       - backend
     environment:
@@ -89,9 +90,25 @@ services:
       - './php74/logs:/var/log/php7.4'
       - '.:/whitebench'
       - './php74/etc/php7.4.ini:/usr/local/etc/php7.4/php7.4.ini'
+      - './nginx/html:/usr/share/nginx/html'
     depends_on:
       - mysql.test
       - redis.test
+      - mongodb
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+    networks:
+      - backend
+    volumes:
+      - './nginx/nginx.conf:/etc/nginx/nginx.conf'
+      - './nginx/html:/usr/share/nginx/html'
+      - '.:/whitebench'
+      - './nginx/conf.d:/etc/nginx/conf.d'
+    depends_on:
+      - php74.test
 #  php72.test:
 #    container_name: php7.2
 #    image: php:7.2
